@@ -1,0 +1,17 @@
+{
+  "name": "v2ex-profile-analysis",
+  "version": "1.0.0",
+  "description": "spider",
+  "main": "index.js",
+  "scripts": {
+    "run": "node index.js"
+  },
+  "author": "guisturdy",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.3.3",
+    "https-proxy-agent": "^2.2.1",
+    "node-fetch": "^2.3.0",
+    "sqlite3": "^4.0.4"
+  }
+}
