@@ -1,14 +1,14 @@
-const fetch = require('node-fetch');
-const HttpsProxyAgent = require('https-proxy-agent');
-const colors = require('colors');
+const fetch = require('node-fetch')
+const HttpsProxyAgent = require('https-proxy-agent')
+const colors = require('colors')
 
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('v2ex.db');
+const sqlite3 = require('sqlite3').verbose()
+const db = new sqlite3.Database('v2ex.db')
 
-import config from './config'
+const CONFIG = require('./config').config
 
 const porxy = [
-  ...(config.proxy || []).map(proxy => new HttpsProxyAgent(proxy)),
+  ...(CONFIG.proxy || []).map(proxy => new HttpsProxyAgent(proxy)),
   null
 ]
 
@@ -30,7 +30,7 @@ db.serialize(function () {
 async function run() {
   console.log('start')
   let requestCount = 0, errorCount = 0, warningCount = 0
-  for (let index = config.startID; index < config.endID; index++) {
+  for (let index = CONFIG.startID; index < CONFIG.endID; index++) {
     let totalPage = 1, nowPage = 1
     while (totalPage >= nowPage) {
       const url = `https://www.v2ex.com/amp/t/${index}/${nowPage}`
@@ -39,7 +39,7 @@ async function run() {
         fetch(url, { agent: porxy[requestCount % porxy.length] })
           .then(res => res.text())
           .then(body => {
-            logContent(logContent)
+            logContent(body)
             insertRow({
               id: index, page: nowPage++, info: body, status: 200
             })
@@ -48,7 +48,7 @@ async function run() {
             if (!totalPage) {
               warningCount++
             }
-            console.log(colors.gray('totalPage' + totalPage))
+            console.log(colors.gray(`page: ${nowPage - 1}/${totalPage}`))
           }).catch(e => {
             insertRow({
               id: index, page: nowPage++, info: e, status: 0
@@ -59,7 +59,7 @@ async function run() {
             const endDate = new Date()
             const cost = endDate.getTime() - startDate.getTime()
             requestCount++
-            logInfo({ url, cost, requestCount, warningCount, errorCount })
+            logInfo({ url, cost, requestCount, warningCount, errorCount, proxyIndex: requestCount % porxy.length })
           }),
         new Promise(r => setTimeout(r, 1000 * 5 / porxy.length))
       ])
@@ -76,10 +76,12 @@ function logContent(body) {
   }
 }
 
-function logInfo({ url, cost, requestCount, warningCount, errorCount }) {
+function logInfo({ url, cost, requestCount, warningCount, errorCount, proxyIndex }) {
   console.log([
-    colors.green(url.replace('https://www.v2ex.com', '')),
+    colors.green(url),
     colors[cost < 1000 ? 'green' : 'yellow'](cost + 'ms'),
+    colors.gray('proxyIndex:' + proxyIndex),
+    '\n',
     colors.cyan('requestCount:' + requestCount),
     colors.yellow('warningCount:' + warningCount),
     colors.red('errorCount:' + errorCount)
