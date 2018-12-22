@@ -84,6 +84,7 @@ function logInfo({ url, cost, requestCount, warningCount, errorCount, proxyIndex
     '\n',
     colors.cyan('requestCount:' + requestCount),
     colors.yellow('warningCount:' + warningCount),
-    colors.red('errorCount:' + errorCount)
+    colors.red('errorCount:' + errorCount),
+    colors.gray(new Date().toLocaleString('zh-CN', { hour12: false }))
   ].join(' '))
 }
