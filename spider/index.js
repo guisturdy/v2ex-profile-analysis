@@ -5,7 +5,11 @@ const colors = require('colors')
 const sqlite3 = require('sqlite3').verbose()
 const db = new sqlite3.Database('v2ex.db')
 
+const keypress = require('keypress')
+
 const CONFIG = require('./config').config
+
+keypress(process.stdin)
 
 const proxy = [
   ...(CONFIG.proxy || []).map(proxy => new HttpsProxyAgent(proxy)),
@@ -14,27 +18,21 @@ const proxy = [
 
 const freeProxy = 'x'.repeat(proxy.length).split('').map((_, i) => i)
 const works = []
-let workInterval
+let workInterval, newWorkEnable = true
 let requestCount = 0, warningCount = 0, errorCount = 0
 
 let needFetchID = CONFIG.startID
 
 function addWork(id, page = 1) {
-  needFetchID = Math.max(id + 1, needFetchID)
-  works.push([id, page])
-}
-
-function finishWork(id, page) {
-  inWork.delete(`${id}:${page}`)
+  if (newWorkEnable) {
+    needFetchID = Math.max(id + 1, needFetchID)
+    works.push([id, page])
+  }
 }
 
 function getWork() {
   if (works.length === 0) {
     addWork(needFetchID)
-    if (needFetchID > CONFIG.endID) {
-      clearInterval(workInterval)
-      return
-    }
   }
   return works.pop()
 }
@@ -83,7 +81,12 @@ async function doFetch(proxyIndex, work) {
 function startWork() {
   workInterval = setInterval(() => {
     if (freeProxy.length) {
-      doFetch(freeProxy.shift(), getWork())
+      const work = getWork()
+      if (work) {
+        doFetch(freeProxy.shift(), work)
+      } else if (freeProxy.length === proxy.length) {
+        clearInterval(workInterval)
+      }
     } else {
       console.log(colors.gray(`all proxy is busy`))
     }
@@ -126,3 +129,19 @@ function logInfo({ url, cost, requestCount, warningCount, errorCount, proxyIndex
     colors.gray(new Date().toLocaleString('zh-CN', { hour12: false }))
   ].join(' '))
 }
+
+let cacheWorks
+process.stdin.on('keypress', function (ch, key) {
+  if (key && key.ctrl && key.name == 'c') {
+    const cacheWorks = []
+    newWorkEnable = false
+    while (works.length) {
+      cacheWorks.push(works.pop())
+    }
+
+    console.log('\n--\nstop spider\n',{ cacheWorks, needFetchID },'\n--\n')
+    process.stdin.pause();
+  }
+});
+
+process.stdin.setRawMode(true);
