@@ -139,11 +139,12 @@ function logInfo({ url, cost, proxyIndex }) {
     colors.green(url),
     colors[cost < 1000 ? 'green' : 'yellow'](cost + 'ms'),
     colors.gray('proxyIndex:' + proxyIndex),
+    colors.gray(new Date().toLocaleString('zh-CN', { hour12: false })),
     '\n',
     colors.cyan('requestCount:' + requestCount),
     colors.yellow('warningCount:' + warningCount),
     colors.red('errorCount:' + errorCount),
-    colors.gray(new Date().toLocaleString('zh-CN', { hour12: false }))
+    colors.gray(colors.gray('ETA:' + new Date(new Date().getTime() + ((CONFIG.endID - needFetchID) * 5000 / proxy.length)).toLocaleString('zh-CN', { hour12: false })))
   ].join(' '))
 }
 
