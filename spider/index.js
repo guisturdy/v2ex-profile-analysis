@@ -47,10 +47,13 @@ async function doFetch(proxyIndex, work) {
   const [id, page] = work
   const url = `https://www.v2ex.com/amp/t/${id}/${page}`
   const startDate = new Date()
+  let finished = false
+  requestCount++
   await Promise.all([
     fetch(url, { agent: proxy[proxyIndex], timeout: 1000 * 5 })
       .then(res => res.text())
       .then(body => {
+        if (finished) return
         logContent(body)
         insertRow({
           id, page, info: body, status: 200
@@ -70,14 +73,23 @@ async function doFetch(proxyIndex, work) {
         addWork(id, page)
         console.log(e)
       }).then(() => {
+        finished = true
         const endDate = new Date()
         const cost = endDate.getTime() - startDate.getTime()
-        requestCount++
-        logInfo({ url, cost, requestCount, warningCount, errorCount, proxyIndex })
+        logInfo({ url, cost, proxyIndex })
       }),
-    new Promise(r => setTimeout(r, 1000 * 5))
+    new Promise((resolve, reject) => setTimeout(() => {
+      if (finished) {
+        resolve()
+      } else {
+        reject('timeout')
+      }
+    }, 1000 * 5))
   ]).catch(e => {
-    console.log(e)
+    errorCount++
+    addWork(id, page)
+    console.log(colors.bgRed(e))
+    logInfo({ url, cost: 1000 * 5, proxyIndex })
   }).then(() => {
     freeProxy.push(proxyIndex)
   })
@@ -122,7 +134,7 @@ function logContent(body) {
   }
 }
 
-function logInfo({ url, cost, requestCount, warningCount, errorCount, proxyIndex }) {
+function logInfo({ url, cost, proxyIndex }) {
   console.log([
     colors.green(url),
     colors[cost < 1000 ? 'green' : 'yellow'](cost + 'ms'),
