@@ -47,7 +47,7 @@ async function doFetch(proxyIndex, work) {
   const url = `https://www.v2ex.com/amp/t/${id}/${page}`
   const startDate = new Date()
   await Promise.all([
-    fetch(url, { agent: proxy[proxyIndex] })
+    fetch(url, { agent: proxy[proxyIndex], timeout: 1000 * 5 })
       .then(res => res.text())
       .then(body => {
         logContent(body)
@@ -83,9 +83,9 @@ async function doFetch(proxyIndex, work) {
 function startWork() {
   workInterval = setInterval(() => {
     if (freeProxy.length) {
-      doFetch(freeProxy.pop(), getWork())
+      doFetch(freeProxy.shift(), getWork())
     } else {
-      console.log(colors.gray(`all proxy is basy`))
+      console.log(colors.gray(`all proxy is busy`))
     }
   }, ~~(1000 * 5 / proxy.length));
 }
