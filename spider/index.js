@@ -19,6 +19,7 @@ const proxy = [
 const freeProxy = 'x'.repeat(proxy.length).split('').map((_, i) => i)
 const works = []
 let workInterval, newWorkEnable = true
+let cacheWorks = []
 let requestCount = 0, warningCount = 0, errorCount = 0
 
 let needFetchID = CONFIG.startID
@@ -27,6 +28,8 @@ function addWork(id, page = 1) {
   if (newWorkEnable) {
     needFetchID = Math.max(id + 1, needFetchID)
     works.push([id, page])
+  } else {
+    cacheWorks.push([id, page])
   }
 }
 
@@ -84,7 +87,7 @@ function startWork() {
       const work = getWork()
       if (work) {
         doFetch(freeProxy.shift(), work)
-      } else if (freeProxy.length === proxy.length) {
+      } else {
         clearInterval(workInterval)
       }
     } else {
@@ -130,18 +133,20 @@ function logInfo({ url, cost, requestCount, warningCount, errorCount, proxyIndex
   ].join(' '))
 }
 
-let cacheWorks
 process.stdin.on('keypress', function (ch, key) {
   if (key && key.ctrl && key.name == 'c') {
-    const cacheWorks = []
     newWorkEnable = false
     while (works.length) {
       cacheWorks.push(works.pop())
     }
-
-    console.log('\n--\nstop spider\n',{ cacheWorks, needFetchID },'\n--\n')
-    process.stdin.pause();
+    let waitFetchFinish = setInterval(() => {
+      if (freeProxy.length === proxy.length) {
+        console.log('\n--\nstop spider\n', { cacheWorks, needFetchID }, '\n--\n')
+        clearInterval(waitFetchFinish)
+      }
+    }, 100)
+    process.stdin.pause()
   }
-});
+})
 
-process.stdin.setRawMode(true);
+process.stdin.setRawMode(true)
