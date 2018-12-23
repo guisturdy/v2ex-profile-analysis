@@ -76,7 +76,9 @@ async function doFetch(proxyIndex, work) {
         logInfo({ url, cost, requestCount, warningCount, errorCount, proxyIndex })
       }),
     new Promise(r => setTimeout(r, 1000 * 5))
-  ]).then(() => {
+  ]).catch(e => {
+    console.log(e)
+  }).then(() => {
     freeProxy.push(proxyIndex)
   })
 }
@@ -139,14 +141,15 @@ process.stdin.on('keypress', function (ch, key) {
     while (works.length) {
       cacheWorks.push(works.pop())
     }
+    let waitCount = 0
     let waitFetchFinish = setInterval(() => {
-      if (freeProxy.length === proxy.length) {
+      if (freeProxy.length === proxy.length || waitCount++ > 10) {
         console.log('\n--\nstop spider\n', { cacheWorks, needFetchID }, '\n--\n')
         clearInterval(waitFetchFinish)
       } else {
         console.log(colors.gray('waiting for fatch finish...'))
       }
-    }, 100)
+    }, 500)
     process.stdin.pause()
   }
 })
