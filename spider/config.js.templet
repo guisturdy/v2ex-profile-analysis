@@ -3,6 +3,9 @@ module.exports.config = {
   proxy: [
     // 'http://localhost:8087'
   ],
+  works: [
+    // [ id, page ]
+  ],
   startID: 400000,
   endID: 500000
 }

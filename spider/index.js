@@ -17,7 +17,7 @@ const proxy = [
 ]
 
 const freeProxy = 'x'.repeat(proxy.length).split('').map((_, i) => i)
-const works = []
+const works = CONFIG.works || []
 let workInterval, newWorkEnable = true
 let cacheWorks = []
 let requestCount = 0, warningCount = 0, errorCount = 0
@@ -143,6 +143,8 @@ process.stdin.on('keypress', function (ch, key) {
       if (freeProxy.length === proxy.length) {
         console.log('\n--\nstop spider\n', { cacheWorks, needFetchID }, '\n--\n')
         clearInterval(waitFetchFinish)
+      } else {
+        console.log(colors.gray('waiting for fatch finish...'))
       }
     }, 100)
     process.stdin.pause()
