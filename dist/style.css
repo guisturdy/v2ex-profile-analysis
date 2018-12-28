@@ -265,6 +265,11 @@ html {
     box-sizing: border-box;
     z-index: 1;
     opacity: 0;
+    pointer-events: none;
+}
+
+.page .chart {
+    margin-left: -1em;
 }
 
 .page .hide-page {
@@ -272,10 +277,12 @@ html {
     animation-fill-mode: forwards;
 }
 
-.page .show-page {
+.page > .page-contaner > .show-page {
     animation: page-show .3s ease-out;
     animation-fill-mode: forwards;
     animation-delay: .4s;
+    z-index: 2;
+    pointer-events: all;
 }
 
 .tips {
@@ -299,7 +306,12 @@ html {
     text-align: justify;
 }
 
-.page-1 .mono {
+#p4-contaner a {
+    color: #000;
+    text-decoration: underline;
+}
+
+.page .mono {
     font-size: 1.2em;
 }
 
@@ -325,4 +337,9 @@ html {
     width: 100%;
     z-index: -1;
     bottom: 0;
+}
+@media screen and (min-width:600px) {
+    .ribbon {
+        width: 80vw;
+    }
 }
