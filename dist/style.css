@@ -8,7 +8,7 @@ html {
 }
 
 html {
-    background-color: #f84171;
+    background-color: #388cfe;
     background-image: radial-gradient(circle at 90% 5%,#388cfe 0%, #46e9e5 100%);
 }
 
@@ -118,25 +118,25 @@ html {
 .ribbon .card-p-6 {
     animation-delay: .5s;
     right: 12.5%;
-    background-image: radial-gradient(circle at 150% -10%,#8113d6 0%, #0dfff0 90%);
+    background-image: radial-gradient(circle at 150% -10%,#fd3e66 0%, #f690ff 90%);
 }
 
 .ribbon .card-p-5 {
     animation-delay: .4s;
     right: 23.5%;
-    background-image: radial-gradient(circle at 150% -10%,#f7236a 0%, #de64ff 90%);
+    background-image: radial-gradient(circle at 150% -10%,#3991fc 0%, #00ffef 120%);
 }
 
 .ribbon .card-p-4 {
     animation-delay: .3s;
     right: 34.5%;
-    background-image: radial-gradient(circle at 150% -10%,#1ed5d9 0%, #02ffd8 90%);
+    background-image: radial-gradient(circle at 150% -10%,#fd3e66 0%, #f690ff 90%);
 }
 
 .ribbon .card-p-3 {
     animation-delay: .2s;
     right: 45.5%;
-    background-image: radial-gradient(circle at 150% -10%,#ffcf00 0%, #d0ff03 90%);
+    background-image: radial-gradient(circle at 150% -10%,#3991fc 0%, #00ffef 120%);
 }
 
 .ribbon .card-p-2 {
