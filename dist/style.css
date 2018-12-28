@@ -1,0 +1,76 @@
+body,
+html {
+    font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+html {
+    background-color: #e2e2e2;
+    background-image: radial-gradient(circle at 90% 5%, #fff 0%, #e2e2e2 50%);
+}
+
+.wrap {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.topic-wrap {
+    position: absolute;
+    right: 1vw;
+    text-align: right;
+    user-select: none;
+    white-space: nowrap;
+    width: 65vw;
+    overflow: visible;
+}
+
+.topic-wrap h1 {
+    font-size: 25vw;
+    font-weight: bold;
+}
+
+.topic-wrap h2 {
+    font-size: 9vw;
+    font-weight: bold;
+}
+
+.topic-wrap h1,
+.topic-wrap h2 {
+    margin: 0;
+    color: transparent;
+    background-image: radial-gradient(circle at 90% 5%, #363636 0%, #000 50%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: -0.1em .05em .15em #b5b5b559;
+    -webkit-text-fill-color: transparent;
+}
+
+.topic-wrap div {
+    color: #ccc;
+    font-family: monospace;
+    text-indent: 6vw;
+    text-align: center;
+}
+
+.topic-wrap .wavy {
+    line-height: 0;
+    margin: 0;
+}
+
+.ribbon {
+    background-color: #c21b0f;
+    background-image: radial-gradient(circle at 50% -10%,#59596d 0%, #334 80%);
+    height: 20vh;
+    width: 200vw;
+    left: -234px;
+    position: absolute;
+    bottom: 150px;
+    transform: rotate(45deg);
+    border-radius: 10vh;
+    box-shadow: 0 1vw 5vw #33334438;
+}
