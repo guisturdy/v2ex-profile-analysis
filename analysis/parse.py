@@ -14,8 +14,8 @@ mongo = MongoClient('127.0.0.1', 27017)
 
 mgDB = mongo.v2ex
 
-itemsSet = mgDB.items
-repliesSet = mgDB.replies
+itemsSet = mgDB.items_n
+repliesSet = mgDB.replies_n
 
 cursor = conn.cursor()
 
@@ -61,20 +61,28 @@ while nowID < maxID:
         nowID = max(row[0], nowID)
         if soup.find('meta', property="article:published_time"):
             bodyPublishTime = parser.parse(soup.find(
-                'meta', property="article:published_time").attrs['content'])
-            _rowInfo['section'] = soup.find(
-                'meta', property="article:section").attrs['content']
-            _rowInfo['publichTime'] = bodyPublishTime
-            _rowInfo['week'] = bodyPublishTime.weekday()
-            _rowInfo['title'] = soup.find('div', class_="topic_title").text
+                'meta', property="article:published_time").attrs['content']) + timedelta(hours=8)
+
             topicInfo = soup.find('div', class_="topic_author")
+
+            _rowInfo = {
+                'id': row[0],
+                'section': soup.find('meta', property="article:section").attrs['content'],
+                'publichTime': bodyPublishTime,
+                'w': bodyPublishTime.weekday(),
+                'y': bodyPublishTime.year,
+                'm': bodyPublishTime.month,
+                'd': bodyPublishTime.day,
+                'h': bodyPublishTime.hour,
+                'title': soup.find('div', class_="topic_title").text,
+                'name': topicInfo.contents[1].attrs['alt'],
+                'content': soup.find('div', class_='topic_content').text,
+                'hits': int(
+                    re.search(r'([0-9]+)', soup.find('div', class_='topic_hits').text).group()),
+                'reply': int(re.search(
+                    r'([0-9]+)', soup.find('div', class_='topic_stats').text).group())
+            }
             createTime = topicInfo.contents[0].text
-            _rowInfo['name'] = topicInfo.contents[1].attrs['alt']
-            _rowInfo['content'] = soup.find('div', class_='topic_content').text
-            _rowInfo['hits'] = int(re.search(
-                r'([0-9]+)', soup.find('div', class_='topic_hits').text).group())
-            _rowInfo['reply'] = int(re.search(
-                r'([0-9]+)', soup.find('div', class_='topic_stats').text).group())
             createTimeOffset = re.findall(
                 r'([0-9]+\s+[天小时分钟秒]{1,2})', createTime)
             bodyCreateTimeOffset = 0
@@ -94,12 +102,6 @@ while nowID < maxID:
                     _publichTime = _reply.find(
                         'div', class_="reply_created").text
                     _p = bodyPublishTime
-                    _r = {
-                        'mainId': _rowInfo['id'],
-                        'section': _rowInfo['section'],
-                        'name': _reply.find('div', class_="reply_author_name").text,
-                        'content': _reply.find('div', class_="reply_content").text
-                    }
                     _replyCreateTimeOffset = re.findall(
                         r'([0-9]+\s+[天小时分钟秒]{1,2})', _publichTimeText)
                     if _replyCreateTimeOffset:
@@ -113,8 +115,19 @@ while nowID < maxID:
                             _p = parser.parse(_publichTimeText)
                         finally:
                             pass
-                    _r['publichTime'] = _p
-                    _r['week'] = _p.weekday()
+
+                    _r = {
+                        'mainId': _rowInfo['id'],
+                        'publichTime': _p,
+                        'w': _p.weekday(),
+                        'y': _p.year,
+                        'm': _p.month,
+                        'd': _p.day,
+                        'h': _p.hour,
+                        'name': _reply.find('div', class_="reply_author_name").text,
+                        'content': _reply.find(
+                            'div', class_="reply_content").text
+                    }
                     replies.append(_r)
             pass
         else:
