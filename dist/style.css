@@ -8,8 +8,8 @@ html {
 }
 
 html {
-    background-color: #e2e2e2;
-    background-image: radial-gradient(circle at 90% 5%, #fff 0%, #e2e2e2 50%);
+    background-color: #f84171;
+    background-image: radial-gradient(circle at 90% 5%,#388cfe 0%, #46e9e5 100%);
 }
 
 .wrap {
@@ -42,16 +42,12 @@ html {
 .topic-wrap h1,
 .topic-wrap h2 {
     margin: 0;
-    color: transparent;
-    background-image: radial-gradient(circle at 90% 5%, #363636 0%, #000 50%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    text-shadow: -0.1em .05em .15em #b5b5b559;
-    -webkit-text-fill-color: transparent;
+    color: #fff;
 }
 
 .topic-wrap div {
-    color: #ccc;
+    color: #fff;
+    opacity: .6;
     font-family: monospace;
     text-indent: 6vw;
     text-align: center;
@@ -63,8 +59,7 @@ html {
 }
 
 .ribbon {
-    background-color: #c21b0f;
-    background-image: radial-gradient(circle at 50% -10%,#59596d 0%, #334 80%);
+    background-color: #ffffffa6;
     height: 20vh;
     width: 200vw;
     left: -234px;
@@ -73,4 +68,84 @@ html {
     transform: rotate(45deg);
     border-radius: 10vh;
     box-shadow: 0 1vw 5vw #33334438;
+}
+
+.ribbon:before {
+    content: '';
+    display: block;
+    position: absolute;
+    border-radius: 10vh;
+    left: 5px;
+    top: 5px;
+    right: 5px;
+    bottom: 5px;
+    border: 1px solid #ffffff59;
+    filter: blur(2px);
+}
+@keyframes ribbon-card-ani {
+    0% {
+        transform: perspective(500px) translateZ(300px) translateY(800%) rotateY(45deg);
+        opacity: 0;
+    }
+
+    30% {
+        transform: perspective(500px) translateZ(200px) translateY(100%) rotateY(0deg);
+        opacity: .5;
+    }
+
+    60% {
+        transform: perspective(500px) translateZ(200px) rotateX(46deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: perspective(500px) translateZ(0px);
+    }
+}
+
+.ribbon .card-p {
+    height: 80%;
+    width: 10%;
+    background: #fff;
+    border-radius: 5px;
+    position: absolute;
+    top: 10%;
+    animation: ribbon-card-ani .4s ease-out;
+    animation-fill-mode: forwards;
+    box-shadow: 0 0 3vh #cccccc80;
+}
+
+.ribbon .card-p-6 {
+    animation-delay: .5s;
+    right: 12.5%;
+    background-image: radial-gradient(circle at 150% -10%,#8113d6 0%, #0dfff0 90%);
+}
+
+.ribbon .card-p-5 {
+    animation-delay: .4s;
+    right: 23.5%;
+    background-image: radial-gradient(circle at 150% -10%,#f7236a 0%, #de64ff 90%);
+}
+
+.ribbon .card-p-4 {
+    animation-delay: .3s;
+    right: 34.5%;
+    background-image: radial-gradient(circle at 150% -10%,#1ed5d9 0%, #02ffd8 90%);
+}
+
+.ribbon .card-p-3 {
+    animation-delay: .2s;
+    right: 45.5%;
+    background-image: radial-gradient(circle at 150% -10%,#ffcf00 0%, #d0ff03 90%);
+}
+
+.ribbon .card-p-2 {
+    animation-delay: .1s;
+    right: 56.5%;
+    background-image: radial-gradient(circle at 150% -10%,#fd3e66 0%, #f690ff 90%);
+}
+
+.ribbon .card-p-1 {
+    right: 67.5%;
+    background-image: radial-gradient(circle at 150% -10%,#3991fc 0%, #00ffef 120%);
 }
