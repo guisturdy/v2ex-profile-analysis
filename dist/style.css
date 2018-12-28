@@ -1,32 +1,32 @@
 body,
 html {
     font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
-    margin: 0;
-    padding: 0;
     width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-html {
-    background-color: #388cfe;
-    background-image: radial-gradient(circle at 90% 5%,#388cfe 0%, #46e9e5 100%);
+.mono {
+    font-family: monospace;
 }
 
 .wrap {
+    position: relative;
+    overflow: hidden;
     width: 100%;
     height: 100%;
-    overflow: hidden;
-    position: relative;
+    color: #000;
 }
 
 .topic-wrap {
     position: absolute;
     right: 1vw;
-    text-align: right;
-    user-select: none;
-    white-space: nowrap;
-    width: 65vw;
     overflow: visible;
+    width: 65vw;
+    user-select: none;
+    text-align: right;
+    white-space: nowrap;
 }
 
 .topic-wrap h1 {
@@ -42,15 +42,12 @@ html {
 .topic-wrap h1,
 .topic-wrap h2 {
     margin: 0;
-    color: #fff;
 }
 
 .topic-wrap div {
-    color: #fff;
-    opacity: .6;
-    font-family: monospace;
-    text-indent: 6vw;
     text-align: center;
+    text-indent: 6vw;
+    opacity: .6;
 }
 
 .topic-wrap .wavy {
@@ -59,27 +56,28 @@ html {
 }
 
 .ribbon {
-    background-color: #ffffffa6;
-    height: 20vh;
-    width: 200vw;
-    left: -234px;
     position: absolute;
     bottom: 150px;
+    left: -234px;
+    width: 200vw;
+    height: 20vh;
     transform: rotate(45deg);
+    border: 2px dashed #000;
     border-radius: 10vh;
-    box-shadow: 0 1vw 5vw #33334438;
+    background-color: rgba(255, 255, 255, 0.651);
+    box-shadow: 0 1vw 5vw rgba(51, 51, 68, 0.22);
 }
 
 .ribbon:before {
-    content: '';
-    display: block;
     position: absolute;
-    border-radius: 10vh;
-    left: 5px;
     top: 5px;
     right: 5px;
     bottom: 5px;
-    border: 1px solid #ffffff59;
+    left: 5px;
+    display: block;
+    content: '';
+    border: 1px solid rgba(255, 255, 255, 0.349);
+    border-radius: 10vh;
     filter: blur(2px);
 }
 @keyframes ribbon-card-ani {
@@ -104,48 +102,227 @@ html {
 }
 
 .ribbon .card-p {
-    height: 80%;
-    width: 10%;
-    background: #fff;
-    border-radius: 5px;
     position: absolute;
     top: 10%;
-    animation: ribbon-card-ani .4s ease-out;
+    box-sizing: border-box;
+    width: 10%;
+    height: 80%;
+    border: 2px solid #000;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 0 3vh rgba(204, 204, 204, 0.502);
     animation-fill-mode: forwards;
-    box-shadow: 0 0 3vh #cccccc80;
+}
+
+.ribbon .init {
+    animation: ribbon-card-ani .4s ease-out;
 }
 
 .ribbon .card-p-6 {
-    animation-delay: .5s;
     right: 12.5%;
-    background-image: radial-gradient(circle at 150% -10%,#fd3e66 0%, #f690ff 90%);
+    animation-delay: .5s;
 }
 
 .ribbon .card-p-5 {
-    animation-delay: .4s;
     right: 23.5%;
-    background-image: radial-gradient(circle at 150% -10%,#3991fc 0%, #00ffef 120%);
+    animation-delay: .4s;
 }
 
 .ribbon .card-p-4 {
-    animation-delay: .3s;
     right: 34.5%;
-    background-image: radial-gradient(circle at 150% -10%,#fd3e66 0%, #f690ff 90%);
+    animation-delay: .3s;
 }
 
 .ribbon .card-p-3 {
-    animation-delay: .2s;
     right: 45.5%;
-    background-image: radial-gradient(circle at 150% -10%,#3991fc 0%, #00ffef 120%);
+    animation-delay: .2s;
 }
 
 .ribbon .card-p-2 {
-    animation-delay: .1s;
     right: 56.5%;
-    background-image: radial-gradient(circle at 150% -10%,#fd3e66 0%, #f690ff 90%);
+    animation-delay: .1s;
 }
 
 .ribbon .card-p-1 {
     right: 67.5%;
-    background-image: radial-gradient(circle at 150% -10%,#3991fc 0%, #00ffef 120%);
+}
+@keyframes ribbon-card-in-view {
+    0% {
+        transform: perspective(300px);
+    }
+
+    20% {
+        transform: perspective(300px) translateZ(50px) rotateX(-15deg) rotateZ(0deg);
+    }
+
+    60% {
+        transform: perspective(300px) translateZ(70px) rotateX(180deg) rotateY(-170deg) rotateZ(360deg) translateX(20%) translateY(50%);
+    }
+
+    100% {
+        transform: perspective(300px) translateZ(70px) rotateX(180deg) rotateY(-170deg) translateX(200%) translateY(800%);
+    }
+}
+
+.ribbon .card-in-view {
+    animation-delay: .2s;
+    animation: ribbon-card-in-view .6s ease-out;
+    z-index: 2;
+    animation-fill-mode: forwards;
+}
+@keyframes ribbon-card-out-view {
+    0% {
+        transform: perspective(300px) translateZ(100px) translateY(300%);
+    }
+
+    80% {
+        transform: perspective(300px) translateZ(100px) rotateX(-15deg);
+    }
+
+    100% {
+        transform: perspective(300px);
+    }
+}
+
+.ribbon .card-out-view {
+    animation-delay: .5s;
+    animation: ribbon-card-out-view .6s ease-out;
+    z-index: 2;
+}
+@keyframes page-hide {
+    0% {
+        transform: perspective(300px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: perspective(300px) rotateZ(17deg) rotateX(-15deg) translateX(-100%) translateY(100%);
+        opacity: 0;
+    }
+}
+@keyframes page-show {
+    0% {
+        transform: perspective(300px) rotateZ(17deg) rotateX(-15deg) translateX(100%) translateY(-100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: perspective(300px);
+        opacity: 1;
+    }
+}
+
+.page {
+    height: 100%;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 1em;
+    box-sizing: border-box;
+}
+
+.page > .page-contaner {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.next-page {
+    position: absolute;
+    height: 4em;
+    width: 4em;
+    border: 2px dashed #000;
+    border-radius: 50%;
+    bottom: 7em;
+    right: -1em;
+    z-index: 2;
+    background: #fff;
+}
+
+.next-page::after {
+    content: '';
+    display: block;
+    border: 2px solid #000;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    transform: rotate(-45deg);
+    height: 1em;
+    width: 1em;
+    position: absolute;
+    right: 1.7em;
+    top: 1.5em;
+    box-sizing: border-box;
+}
+
+.page > .page-contaner > div {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: #fff;
+    padding: 1em;
+    text-indent: 1em;
+    border: 2px solid #000;
+    box-sizing: border-box;
+    z-index: 1;
+    opacity: 0;
+}
+
+.page .hide-page {
+    animation: page-hide .2s ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+.page .show-page {
+    animation: page-show .3s ease-out;
+    animation-fill-mode: forwards;
+    animation-delay: .4s;
+}
+
+.tips {
+    font-family: cursive;
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+    text-align: right;
+}
+
+.tips p {
+    margin: 0;
+}
+
+.tips p::before {
+    content: '--';
+}
+
+.page-1 p {
+    line-height: 2;
+    text-align: justify;
+}
+
+.page-1 .mono {
+    font-size: 1.2em;
+}
+
+.del {
+    text-decoration: line-through;
+    font-style: oblique;
+    color: #999;
+    font-size: .8em;
+}
+
+.yellow-under {
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+}
+
+.yellow-under:before {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 50%;
+    background: yellow;
+    width: 100%;
+    z-index: -1;
+    bottom: 0;
 }
