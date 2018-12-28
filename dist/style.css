@@ -292,6 +292,9 @@ html {
     bottom: 1em;
     right: 1em;
     text-align: right;
+    font-family: serif;
+    font-style: oblique;
+    font-size: .8em;
 }
 
 .tips p {
