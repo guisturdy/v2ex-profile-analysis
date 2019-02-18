@@ -231,11 +231,30 @@ html {
     position: absolute;
     height: 4em;
     width: 4em;
-    border: 2px dashed #000;
-    border-radius: 50%;
     bottom: 7em;
     right: -1em;
     z-index: 2;
+}
+
+@keyframes next-page-border-rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.next-page::before {
+    content: '';
+    display: block;
+    border: 2px dashed #000;
+    height:100%;
+    width:100%;
+    border-radius:50%;
+    box-sizing: border-box;
+    animation: next-page-border-rotate 10s linear infinite;
     background: #fff;
 }
 
@@ -252,6 +271,10 @@ html {
     right: 1.7em;
     top: 1.5em;
     box-sizing: border-box;
+}
+
+.next-page:hover::after{
+    transform: rotate(-45deg) scale(1.1);
 }
 
 .page > .page-contaner > div {
